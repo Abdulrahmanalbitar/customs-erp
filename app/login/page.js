@@ -9,7 +9,8 @@ import OceanHero from '@/components/OceanHero';
 
 async function login(formData) {
   'use server';
-  const username = String(formData.get('username') || '').trim();
+  // Phones often capitalise the first letter or add a space: usernames are lowercase.
+  const username = String(formData.get('username') || '').trim().toLowerCase();
   const password = String(formData.get('password') || '');
   const user = await db.user.findUnique({ where: { username } });
   if (!user || !user.active || !(await bcrypt.compare(password, user.password))) {
@@ -32,8 +33,8 @@ export default async function LoginPage({ searchParams }) {
             <p className="mt-2 text-sm text-slate-500">سجّل الدخول إلى منصة إدارة التخليص الجمركي</p>
           </div>
           {searchParams?.error && <div className="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-300">اسم المستخدم أو كلمة المرور غير صحيحة</div>}
-          <div className="mb-4"><label>اسم المستخدم</label><input name="username" className="input h-12" required autoFocus dir="ltr" /></div>
-          <div className="mb-6"><label>كلمة المرور</label><input name="password" type="password" className="input h-12" required dir="ltr" /></div>
+          <div className="mb-4"><label>اسم المستخدم</label><input name="username" className="input h-12" required autoFocus dir="ltr" autoCapitalize="none" autoCorrect="off" spellCheck={false} autoComplete="username" /></div>
+          <div className="mb-6"><label>كلمة المرور</label><input name="password" type="password" className="input h-12" required dir="ltr" autoCapitalize="none" autoCorrect="off" autoComplete="current-password" /></div>
           <button className="btn-primary h-12 w-full text-base">دخول</button>
           <Link href="/track" className="mt-6 flex items-center justify-center gap-2 text-sm text-slate-500 hover:text-brand-600"><MapPin className="h-4 w-4" /> عميل؟ تتبع شحنتك من هنا</Link>
         </form>

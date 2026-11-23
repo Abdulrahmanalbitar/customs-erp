@@ -17,7 +17,7 @@ const SECTION_NAMES = {
 async function createUser(formData) {
   'use server';
   await requireAccess('users');
-  const username = str(formData.get('username'));
+  const username = str(formData.get('username'))?.toLowerCase();
   const password = String(formData.get('password') || '');
   if (!username || password.length < 6) redirect('/users?error=short');
   if (await db.user.findUnique({ where: { username } })) redirect('/users?error=exists');
