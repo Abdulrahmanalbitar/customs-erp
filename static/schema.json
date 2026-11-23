@@ -1,0 +1,1484 @@
+{
+ "User": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "username": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "unique": true
+   },
+   "name": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "password": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "role": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "CLERK"
+   },
+   "active": {
+    "type": "Boolean",
+    "list": false,
+    "optional": false,
+    "default": true
+   },
+   "employee": {
+    "type": "Employee",
+    "list": false,
+    "optional": true,
+    "relation": {
+     "fk": "employeeId",
+     "ref": "id",
+     "onDelete": null
+    },
+    "kind": "owner"
+   },
+   "employeeId": {
+    "type": "Int",
+    "list": false,
+    "optional": true,
+    "unique": true
+   },
+   "createdAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   },
+   "payments": {
+    "type": "Payment",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "userId",
+    "onDelete": null
+   }
+  }
+ },
+ "Client": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "name": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "type": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "COMPANY"
+   },
+   "phone": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "email": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "taxNumber": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "commercialReg": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "address": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "notes": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "createdAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   },
+   "declarations": {
+    "type": "Declaration",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "clientId",
+    "onDelete": null
+   },
+   "invoices": {
+    "type": "Invoice",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "clientId",
+    "onDelete": null
+   },
+   "payments": {
+    "type": "Payment",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "clientId",
+    "onDelete": null
+   },
+   "shipments": {
+    "type": "Shipment",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "clientId",
+    "onDelete": null
+   },
+   "quotes": {
+    "type": "Quote",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "clientId",
+    "onDelete": null
+   }
+  }
+ },
+ "Employee": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "name": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "jobTitle": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "phone": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "salary": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "hiredAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   },
+   "active": {
+    "type": "Boolean",
+    "list": false,
+    "optional": false,
+    "default": true
+   },
+   "user": {
+    "type": "User",
+    "list": false,
+    "optional": true,
+    "kind": "back",
+    "fk": "employeeId",
+    "onDelete": null
+   },
+   "declarations": {
+    "type": "Declaration",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "employeeId",
+    "onDelete": null
+   },
+   "salaries": {
+    "type": "SalaryPayment",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "employeeId",
+    "onDelete": null
+   }
+  }
+ },
+ "Declaration": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "refNo": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "unique": true
+   },
+   "declNo": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "type": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "IMPORT"
+   },
+   "customsOffice": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "client": {
+    "type": "Client",
+    "list": false,
+    "optional": false,
+    "relation": {
+     "fk": "clientId",
+     "ref": "id",
+     "onDelete": null
+    },
+    "kind": "owner"
+   },
+   "clientId": {
+    "type": "Int",
+    "list": false,
+    "optional": false
+   },
+   "employee": {
+    "type": "Employee",
+    "list": false,
+    "optional": true,
+    "relation": {
+     "fk": "employeeId",
+     "ref": "id",
+     "onDelete": null
+    },
+    "kind": "owner"
+   },
+   "employeeId": {
+    "type": "Int",
+    "list": false,
+    "optional": true
+   },
+   "goods": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "hsCode": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "origin": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "transport": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "containerNo": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "billOfLading": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "weight": {
+    "type": "Float",
+    "list": false,
+    "optional": true
+   },
+   "packages": {
+    "type": "Int",
+    "list": false,
+    "optional": true
+   },
+   "goodsValue": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "currency": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "USD"
+   },
+   "dutyAmount": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "status": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "RECEIVED"
+   },
+   "notes": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "openedAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   },
+   "releasedAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": true
+   },
+   "documents": {
+    "type": "Document",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "declarationId",
+    "onDelete": "Cascade"
+   },
+   "invoices": {
+    "type": "Invoice",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "declarationId",
+    "onDelete": null
+   },
+   "expenses": {
+    "type": "Expense",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "declarationId",
+    "onDelete": null
+   },
+   "events": {
+    "type": "DeclarationEvent",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "declarationId",
+    "onDelete": "Cascade"
+   },
+   "shipments": {
+    "type": "Shipment",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "declarationId",
+    "onDelete": null
+   },
+   "priority": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "NORMAL"
+   },
+   "dueDate": {
+    "type": "DateTime",
+    "list": false,
+    "optional": true
+   }
+  }
+ },
+ "DeclarationEvent": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "declaration": {
+    "type": "Declaration",
+    "list": false,
+    "optional": false,
+    "relation": {
+     "fk": "declarationId",
+     "ref": "id",
+     "onDelete": "Cascade"
+    },
+    "kind": "owner"
+   },
+   "declarationId": {
+    "type": "Int",
+    "list": false,
+    "optional": false
+   },
+   "status": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "note": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "by": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "createdAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   }
+  }
+ },
+ "Document": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "declaration": {
+    "type": "Declaration",
+    "list": false,
+    "optional": false,
+    "relation": {
+     "fk": "declarationId",
+     "ref": "id",
+     "onDelete": "Cascade"
+    },
+    "kind": "owner"
+   },
+   "declarationId": {
+    "type": "Int",
+    "list": false,
+    "optional": false
+   },
+   "kind": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "number": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "received": {
+    "type": "Boolean",
+    "list": false,
+    "optional": false,
+    "default": false
+   },
+   "notes": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "fileName": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "filePath": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "mimeType": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "fileSize": {
+    "type": "Int",
+    "list": false,
+    "optional": true
+   },
+   "blob": {
+    "type": "FileBlob",
+    "list": false,
+    "optional": true,
+    "kind": "back",
+    "fk": "documentId",
+    "onDelete": "Cascade"
+   },
+   "createdAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   }
+  }
+ },
+ "FileBlob": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "document": {
+    "type": "Document",
+    "list": false,
+    "optional": false,
+    "relation": {
+     "fk": "documentId",
+     "ref": "id",
+     "onDelete": "Cascade"
+    },
+    "kind": "owner"
+   },
+   "documentId": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "unique": true
+   },
+   "data": {
+    "type": "Bytes",
+    "list": false,
+    "optional": false
+   }
+  }
+ },
+ "Service": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "name": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "price": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "currency": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "USD"
+   },
+   "active": {
+    "type": "Boolean",
+    "list": false,
+    "optional": false,
+    "default": true
+   }
+  }
+ },
+ "Invoice": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "number": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "unique": true
+   },
+   "client": {
+    "type": "Client",
+    "list": false,
+    "optional": false,
+    "relation": {
+     "fk": "clientId",
+     "ref": "id",
+     "onDelete": null
+    },
+    "kind": "owner"
+   },
+   "clientId": {
+    "type": "Int",
+    "list": false,
+    "optional": false
+   },
+   "declaration": {
+    "type": "Declaration",
+    "list": false,
+    "optional": true,
+    "relation": {
+     "fk": "declarationId",
+     "ref": "id",
+     "onDelete": null
+    },
+    "kind": "owner"
+   },
+   "declarationId": {
+    "type": "Int",
+    "list": false,
+    "optional": true
+   },
+   "currency": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "USD"
+   },
+   "subtotal": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "discount": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "total": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "paid": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "status": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "UNPAID"
+   },
+   "source": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "INVOICE"
+   },
+   "notes": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "createdAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   },
+   "items": {
+    "type": "InvoiceItem",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "invoiceId",
+    "onDelete": "Cascade"
+   },
+   "payments": {
+    "type": "Payment",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "invoiceId",
+    "onDelete": null
+   }
+  }
+ },
+ "InvoiceItem": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "invoice": {
+    "type": "Invoice",
+    "list": false,
+    "optional": false,
+    "relation": {
+     "fk": "invoiceId",
+     "ref": "id",
+     "onDelete": "Cascade"
+    },
+    "kind": "owner"
+   },
+   "invoiceId": {
+    "type": "Int",
+    "list": false,
+    "optional": false
+   },
+   "description": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "kind": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "SERVICE"
+   },
+   "qty": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 1
+   },
+   "price": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "total": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "expenseId": {
+    "type": "Int",
+    "list": false,
+    "optional": true
+   }
+  }
+ },
+ "Payment": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "invoice": {
+    "type": "Invoice",
+    "list": false,
+    "optional": true,
+    "relation": {
+     "fk": "invoiceId",
+     "ref": "id",
+     "onDelete": null
+    },
+    "kind": "owner"
+   },
+   "invoiceId": {
+    "type": "Int",
+    "list": false,
+    "optional": true
+   },
+   "client": {
+    "type": "Client",
+    "list": false,
+    "optional": false,
+    "relation": {
+     "fk": "clientId",
+     "ref": "id",
+     "onDelete": null
+    },
+    "kind": "owner"
+   },
+   "clientId": {
+    "type": "Int",
+    "list": false,
+    "optional": false
+   },
+   "amount": {
+    "type": "Float",
+    "list": false,
+    "optional": false
+   },
+   "currency": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "USD"
+   },
+   "method": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "CASH"
+   },
+   "reference": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "user": {
+    "type": "User",
+    "list": false,
+    "optional": true,
+    "relation": {
+     "fk": "userId",
+     "ref": "id",
+     "onDelete": null
+    },
+    "kind": "owner"
+   },
+   "userId": {
+    "type": "Int",
+    "list": false,
+    "optional": true
+   },
+   "createdAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   }
+  }
+ },
+ "Expense": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "category": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "description": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "amount": {
+    "type": "Float",
+    "list": false,
+    "optional": false
+   },
+   "currency": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "USD"
+   },
+   "onBehalf": {
+    "type": "Boolean",
+    "list": false,
+    "optional": false,
+    "default": false
+   },
+   "billed": {
+    "type": "Boolean",
+    "list": false,
+    "optional": false,
+    "default": false
+   },
+   "declaration": {
+    "type": "Declaration",
+    "list": false,
+    "optional": true,
+    "relation": {
+     "fk": "declarationId",
+     "ref": "id",
+     "onDelete": null
+    },
+    "kind": "owner"
+   },
+   "declarationId": {
+    "type": "Int",
+    "list": false,
+    "optional": true
+   },
+   "createdAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   }
+  }
+ },
+ "SalaryPayment": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "employee": {
+    "type": "Employee",
+    "list": false,
+    "optional": false,
+    "relation": {
+     "fk": "employeeId",
+     "ref": "id",
+     "onDelete": null
+    },
+    "kind": "owner"
+   },
+   "employeeId": {
+    "type": "Int",
+    "list": false,
+    "optional": false
+   },
+   "month": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "amount": {
+    "type": "Float",
+    "list": false,
+    "optional": false
+   },
+   "notes": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "createdAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   }
+  }
+ },
+ "JournalEntry": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "date": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   },
+   "account": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "debit": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "credit": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "currency": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "USD"
+   },
+   "description": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "refType": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "refId": {
+    "type": "Int",
+    "list": false,
+    "optional": true
+   }
+  }
+ },
+ "Setting": {
+  "fields": {
+   "key": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "id": true
+   },
+   "value": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   }
+  }
+ },
+ "Shipment": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "trackingNo": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "unique": true
+   },
+   "client": {
+    "type": "Client",
+    "list": false,
+    "optional": false,
+    "relation": {
+     "fk": "clientId",
+     "ref": "id",
+     "onDelete": null
+    },
+    "kind": "owner"
+   },
+   "clientId": {
+    "type": "Int",
+    "list": false,
+    "optional": false
+   },
+   "declaration": {
+    "type": "Declaration",
+    "list": false,
+    "optional": true,
+    "relation": {
+     "fk": "declarationId",
+     "ref": "id",
+     "onDelete": null
+    },
+    "kind": "owner"
+   },
+   "declarationId": {
+    "type": "Int",
+    "list": false,
+    "optional": true
+   },
+   "mode": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "SEA"
+   },
+   "carrier": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "vessel": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "voyage": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "containerNo": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "containerType": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "blNo": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "originPort": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "destPort": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "etd": {
+    "type": "DateTime",
+    "list": false,
+    "optional": true
+   },
+   "eta": {
+    "type": "DateTime",
+    "list": false,
+    "optional": true
+   },
+   "atd": {
+    "type": "DateTime",
+    "list": false,
+    "optional": true
+   },
+   "ata": {
+    "type": "DateTime",
+    "list": false,
+    "optional": true
+   },
+   "goods": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "weight": {
+    "type": "Float",
+    "list": false,
+    "optional": true
+   },
+   "status": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "BOOKED"
+   },
+   "notes": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "createdAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   },
+   "events": {
+    "type": "ShipmentEvent",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "shipmentId",
+    "onDelete": "Cascade"
+   }
+  }
+ },
+ "ShipmentEvent": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "shipment": {
+    "type": "Shipment",
+    "list": false,
+    "optional": false,
+    "relation": {
+     "fk": "shipmentId",
+     "ref": "id",
+     "onDelete": "Cascade"
+    },
+    "kind": "owner"
+   },
+   "shipmentId": {
+    "type": "Int",
+    "list": false,
+    "optional": false
+   },
+   "status": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "location": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "note": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "at": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   }
+  }
+ },
+ "HsRate": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "hsCode": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "unique": true
+   },
+   "description": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "dutyRate": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "otherRate": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "notes": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   }
+  }
+ },
+ "Quote": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "number": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "unique": true
+   },
+   "client": {
+    "type": "Client",
+    "list": false,
+    "optional": false,
+    "relation": {
+     "fk": "clientId",
+     "ref": "id",
+     "onDelete": null
+    },
+    "kind": "owner"
+   },
+   "clientId": {
+    "type": "Int",
+    "list": false,
+    "optional": false
+   },
+   "currency": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "USD"
+   },
+   "total": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   },
+   "status": {
+    "type": "String",
+    "list": false,
+    "optional": false,
+    "default": "DRAFT"
+   },
+   "validUntil": {
+    "type": "DateTime",
+    "list": false,
+    "optional": true
+   },
+   "notes": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "invoiceId": {
+    "type": "Int",
+    "list": false,
+    "optional": true
+   },
+   "createdAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   },
+   "items": {
+    "type": "QuoteItem",
+    "list": true,
+    "optional": false,
+    "kind": "back",
+    "fk": "quoteId",
+    "onDelete": "Cascade"
+   }
+  }
+ },
+ "QuoteItem": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "quote": {
+    "type": "Quote",
+    "list": false,
+    "optional": false,
+    "relation": {
+     "fk": "quoteId",
+     "ref": "id",
+     "onDelete": "Cascade"
+    },
+    "kind": "owner"
+   },
+   "quoteId": {
+    "type": "Int",
+    "list": false,
+    "optional": false
+   },
+   "description": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "qty": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 1
+   },
+   "price": {
+    "type": "Float",
+    "list": false,
+    "optional": false,
+    "default": 0
+   }
+  }
+ },
+ "ActivityLog": {
+  "fields": {
+   "id": {
+    "type": "Int",
+    "list": false,
+    "optional": false,
+    "id": true,
+    "autoincrement": true
+   },
+   "userName": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "action": {
+    "type": "String",
+    "list": false,
+    "optional": false
+   },
+   "entity": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "entityId": {
+    "type": "Int",
+    "list": false,
+    "optional": true
+   },
+   "details": {
+    "type": "String",
+    "list": false,
+    "optional": true
+   },
+   "createdAt": {
+    "type": "DateTime",
+    "list": false,
+    "optional": false,
+    "defaultNow": true
+   }
+  }
+ }
+}

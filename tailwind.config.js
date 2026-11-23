@@ -4,7 +4,7 @@ const v = (name) => `rgb(var(--${name}) / <alpha-value>)`;
 
 module.exports = {
   darkMode: 'class',
-  content: ['./app/**/*.{js,jsx}', './components/**/*.{js,jsx}'],
+  content: ['./app/**/*.{js,jsx}', './components/**/*.{js,jsx}', './static/*.{js,jsx}', './static/shims/*.js'],
   theme: {
     extend: {
       fontFamily: {

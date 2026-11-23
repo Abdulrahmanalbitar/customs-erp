@@ -63,6 +63,8 @@
 }
 
 @layer base {
+  /* Grid items may shrink below their content width (prevents horizontal scroll on phones). */
+  .grid > * { min-width: 0; }
   html { scroll-behavior: smooth; }
   body { @apply text-slate-800 font-sans antialiased dark:text-slate-200; background: var(--page); font-size: 14.5px; line-height: 1.6; }
   .num, .font-mono { font-variant-numeric: tabular-nums; }

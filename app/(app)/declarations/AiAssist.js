@@ -21,6 +21,7 @@ export default function AiAssist({ enabled }) {
   const form = () => box.current?.closest('form');
 
   if (!enabled) {
+    if (process.env.STATIC_BUILD) return null; // no server → no AI in the GitHub Pages build
     return (
       <div className="card flex items-center gap-3 border-dashed text-sm text-slate-500">
         <Sparkles className="h-5 w-5 text-fuchsia-500" /> فعّل الذكاء الاصطناعي (ANTHROPIC_API_KEY) لتعبئة البيان تلقائياً من صورة الفاتورة أو البوليصة واقتراح البند الجمركي.

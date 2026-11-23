@@ -31,9 +31,11 @@ export default function TodayBrief({ text, ai }) {
         )}
       </div>
       <p className="whitespace-pre-line text-[14.5px] leading-7 text-white/90">{brief}</p>
-      <Link href="/assistant" className="mt-3 inline-flex items-center gap-1 text-sm text-white/80 hover:text-white">
-        {t('اسأل المساعد', 'Ask the assistant')} <ArrowLeft className="h-4 w-4 ltr:rotate-180" />
-      </Link>
+      {ai && (
+        <Link href="/assistant" className="mt-3 inline-flex items-center gap-1 text-sm text-white/80 hover:text-white">
+          {t('اسأل المساعد', 'Ask the assistant')} <ArrowLeft className="h-4 w-4 ltr:rotate-180" />
+        </Link>
+      )}
     </div>
   );
 }

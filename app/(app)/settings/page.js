@@ -3,6 +3,7 @@ import { db } from '@/lib/db';
 import { requireAccess } from '@/lib/auth';
 import { getSettings, DEFAULT_SETTINGS } from '@/lib/settings';
 import { PageHeader, Table, Options, Field } from '@/components/ui';
+import LocalDataPanel from '@/components/LocalDataPanel';
 import { SubmitButton } from '@/components/buttons';
 import { money, num, str } from '@/lib/format';
 import { CURRENCIES } from '@/lib/constants';
@@ -50,6 +51,7 @@ export default async function SettingsPage() {
   return (
     <>
       <PageHeader title="الإعدادات" icon={Settings} />
+      <LocalDataPanel />
       <div className="grid gap-6 lg:grid-cols-2">
         <form action={saveSettings} className="card grid h-fit gap-4 md:grid-cols-2">
           <h2 className="md:col-span-2">بيانات المكتب</h2>

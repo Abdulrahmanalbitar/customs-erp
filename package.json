@@ -8,7 +8,10 @@
     "start": "next start",
     "setup": "node scripts/db-provider.js && prisma generate && prisma db push && node prisma/seed.js",
     "vercel-build": "node scripts/db-provider.js && prisma generate && prisma db push --skip-generate && node prisma/seed.js && next build",
-    "postinstall": "node scripts/db-provider.js && prisma generate"
+    "postinstall": "node scripts/db-provider.js && prisma generate",
+    "build:static": "node scripts/static-schema.js && vite build --config static/vite.config.mjs",
+    "data:static": "node scripts/static-schema.js && node scripts/static-data.js",
+    "dev:static": "vite --config static/vite.config.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.12.0",
@@ -26,10 +29,15 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "10.4.20",
     "postcss": "8.4.49",
     "prisma": "5.22.0",
-    "tailwindcss": "3.4.19"
+    "react-dom19": "npm:react-dom@^19.0.0",
+    "react-router-dom": "^6.28.0",
+    "react19": "npm:react@^19.0.0",
+    "tailwindcss": "3.4.19",
+    "vite": "^5.4.11"
   },
   "engines": {
     "node": ">=18.18"
