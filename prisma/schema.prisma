@@ -1,0 +1,296 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  username   String    @unique
+  name       String
+  password   String
+  role       String    @default("CLERK") // ADMIN, ACCOUNTANT, BROKER, CASHIER
+  active     Boolean   @default(true)
+  employee   Employee? @relation(fields: [employeeId], references: [id])
+  employeeId Int?      @unique
+  createdAt  DateTime  @default(now())
+  payments   Payment[]
+}
+
+model Client {
+  id           Int           @id @default(autoincrement())
+  name         String
+  type         String        @default("COMPANY") // COMPANY, PERSON
+  phone        String?
+  email        String?
+  taxNumber    String?
+  commercialReg String?
+  address      String?
+  notes        String?
+  createdAt    DateTime      @default(now())
+  declarations Declaration[]
+  invoices     Invoice[]
+  payments     Payment[]
+  shipments    Shipment[]
+  quotes       Quote[]
+}
+
+model Employee {
+  id        Int           @id @default(autoincrement())
+  name      String
+  jobTitle  String?
+  phone     String?
+  salary    Float         @default(0)
+  hiredAt   DateTime      @default(now())
+  active    Boolean       @default(true)
+  user      User?
+  declarations Declaration[]
+  salaries  SalaryPayment[]
+}
+
+model Declaration {
+  id           Int        @id @default(autoincrement())
+  refNo        String     @unique
+  declNo       String?
+  type         String     @default("IMPORT") // IMPORT, EXPORT, TRANSIT
+  customsOffice String?
+  client       Client     @relation(fields: [clientId], references: [id])
+  clientId     Int
+  employee     Employee?  @relation(fields: [employeeId], references: [id])
+  employeeId   Int?
+  goods        String?
+  hsCode       String?
+  origin       String?
+  transport    String?    // SEA, LAND, AIR
+  containerNo  String?
+  billOfLading String?
+  weight       Float?
+  packages     Int?
+  goodsValue   Float      @default(0)
+  currency     String     @default("USD")
+  dutyAmount   Float      @default(0)
+  status       String     @default("RECEIVED")
+  notes        String?
+  openedAt     DateTime   @default(now())
+  releasedAt   DateTime?
+  documents    Document[]
+  invoices     Invoice[]
+  expenses     Expense[]
+  events       DeclarationEvent[]
+  shipments    Shipment[]
+  priority     String     @default("NORMAL") // LOW, NORMAL, HIGH, URGENT
+  dueDate      DateTime?
+}
+
+model DeclarationEvent {
+  id            Int         @id @default(autoincrement())
+  declaration   Declaration @relation(fields: [declarationId], references: [id], onDelete: Cascade)
+  declarationId Int
+  status        String
+  note          String?
+  by            String?
+  createdAt     DateTime    @default(now())
+}
+
+model Document {
+  id            Int         @id @default(autoincrement())
+  declaration   Declaration @relation(fields: [declarationId], references: [id], onDelete: Cascade)
+  declarationId Int
+  kind          String
+  number        String?
+  received      Boolean     @default(false)
+  notes         String?
+  fileName      String?
+  filePath      String?
+  mimeType      String?
+  fileSize      Int?
+  blob          FileBlob?
+  createdAt     DateTime    @default(now())
+}
+
+// Uploaded file bytes live in the database so the app works on hosts without a persistent disk.
+model FileBlob {
+  id         Int      @id @default(autoincrement())
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId Int      @unique
+  data       Bytes
+}
+
+model Service {
+  id        Int     @id @default(autoincrement())
+  name      String
+  price     Float   @default(0)
+  currency  String  @default("USD")
+  active    Boolean @default(true)
+}
+
+model Invoice {
+  id            Int           @id @default(autoincrement())
+  number        String        @unique
+  client        Client        @relation(fields: [clientId], references: [id])
+  clientId      Int
+  declaration   Declaration?  @relation(fields: [declarationId], references: [id])
+  declarationId Int?
+  currency      String        @default("USD")
+  subtotal      Float         @default(0)
+  discount      Float         @default(0)
+  total         Float         @default(0)
+  paid          Float         @default(0)
+  status        String        @default("UNPAID") // UNPAID, PARTIAL, PAID, VOID
+  source        String        @default("INVOICE") // INVOICE, POS
+  notes         String?
+  createdAt     DateTime      @default(now())
+  items         InvoiceItem[]
+  payments      Payment[]
+}
+
+model InvoiceItem {
+  id          Int     @id @default(autoincrement())
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  invoiceId   Int
+  description String
+  kind        String  @default("SERVICE") // SERVICE, DISBURSEMENT
+  qty         Float   @default(1)
+  price       Float   @default(0)
+  total       Float   @default(0)
+  expenseId   Int?
+}
+
+model Payment {
+  id        Int      @id @default(autoincrement())
+  invoice   Invoice? @relation(fields: [invoiceId], references: [id])
+  invoiceId Int?
+  client    Client   @relation(fields: [clientId], references: [id])
+  clientId  Int
+  amount    Float
+  currency  String   @default("USD")
+  method    String   @default("CASH") // CASH, TRANSFER, CHEQUE, CARD
+  reference String?
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+  createdAt DateTime @default(now())
+}
+
+model Expense {
+  id            Int          @id @default(autoincrement())
+  category      String
+  description   String?
+  amount        Float
+  currency      String       @default("USD")
+  onBehalf      Boolean      @default(false) // paid on behalf of client (re-billable)
+  billed        Boolean      @default(false)
+  declaration   Declaration? @relation(fields: [declarationId], references: [id])
+  declarationId Int?
+  createdAt     DateTime     @default(now())
+}
+
+model SalaryPayment {
+  id         Int      @id @default(autoincrement())
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  employeeId Int
+  month      String
+  amount     Float
+  notes      String?
+  createdAt  DateTime @default(now())
+}
+
+model JournalEntry {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @default(now())
+  account     String   // CASH, BANK, RECEIVABLE, REVENUE, EXPENSE, SALARIES, DISBURSEMENTS
+  debit       Float    @default(0)
+  credit      Float    @default(0)
+  currency    String   @default("USD")
+  description String
+  refType     String?
+  refId       Int?
+}
+
+model Setting {
+  key   String @id
+  value String
+}
+
+model Shipment {
+  id            Int             @id @default(autoincrement())
+  trackingNo    String          @unique
+  client        Client          @relation(fields: [clientId], references: [id])
+  clientId      Int
+  declaration   Declaration?    @relation(fields: [declarationId], references: [id])
+  declarationId Int?
+  mode          String          @default("SEA") // SEA, AIR, LAND
+  carrier       String?
+  vessel        String?
+  voyage        String?
+  containerNo   String?
+  containerType String?
+  blNo          String?
+  originPort    String
+  destPort      String
+  etd           DateTime?
+  eta           DateTime?
+  atd           DateTime?
+  ata           DateTime?
+  goods         String?
+  weight        Float?
+  status        String          @default("BOOKED")
+  notes         String?
+  createdAt     DateTime        @default(now())
+  events        ShipmentEvent[]
+}
+
+model ShipmentEvent {
+  id         Int      @id @default(autoincrement())
+  shipment   Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  shipmentId Int
+  status     String
+  location   String?
+  note       String?
+  at         DateTime @default(now())
+}
+
+model HsRate {
+  id          Int     @id @default(autoincrement())
+  hsCode      String  @unique
+  description String
+  dutyRate    Float   @default(0) // percent
+  otherRate   Float   @default(0) // percent: spending/reconstruction fees etc
+  notes       String?
+}
+
+model Quote {
+  id         Int         @id @default(autoincrement())
+  number     String      @unique
+  client     Client      @relation(fields: [clientId], references: [id])
+  clientId   Int
+  currency   String      @default("USD")
+  total      Float       @default(0)
+  status     String      @default("DRAFT") // DRAFT, SENT, ACCEPTED, REJECTED, INVOICED
+  validUntil DateTime?
+  notes      String?
+  invoiceId  Int?
+  createdAt  DateTime    @default(now())
+  items      QuoteItem[]
+}
+
+model QuoteItem {
+  id          Int    @id @default(autoincrement())
+  quote       Quote  @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId     Int
+  description String
+  qty         Float  @default(1)
+  price       Float  @default(0)
+}
+
+model ActivityLog {
+  id        Int      @id @default(autoincrement())
+  userName  String?
+  action    String
+  entity    String?
+  entityId  Int?
+  details   String?
+  createdAt DateTime @default(now())
+}
